@@ -5,7 +5,7 @@
     <title>Title</title>
     <style>
         body{
-
+            background-image: url(piano.jpg);
         }
         .keys{
             display: flex;
@@ -21,12 +21,13 @@
             width: 100px;
             margin: 1rem;
             text-align: center;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.1);
             text-shadow: 1px  0 5px black;
             transition: 0.1s;
         }
         .playing {
-            transform: scale(1.1);
+            margin-top:10px;
+            transform: scale(0.9);
             border-color: #ffc600;
             box-shadow: 0 0 1rem #ffc600;
         }
@@ -44,13 +45,13 @@
     <div data-KeyCode="75" class="key">K</div>
     <div data-KeyCode="76" class="key">L</div>
 </div>
-<audio data-KeyCode="83" src="piano/s.mp3"></audio>
-<audio data-KeyCode="68" src="piano/d.mp3"></audio>
-<audio data-KeyCode="70" src="piano/f.mp3"></audio>
-<audio data-KeyCode="71" src="piano/g.mp3"></audio>
-<audio data-KeyCode="72" src="piano/h.mp3"></audio>
-<audio data-KeyCode="74" src="piano/j.mp3"></audio>
-<audio data-KeyCode="75" src="piano/k.mp3"></audio>
+<audio data-KeyCode="83" src="piano/1.C(do).mp3"></audio>
+<audio data-KeyCode="68" src="piano/2.D(re).mp3"></audio>
+<audio data-KeyCode="70" src="piano/3.E(mi).mp3"></audio>
+<audio data-KeyCode="71" src="piano/4.F(fa).mp3"></audio>
+<audio data-KeyCode="72" src="piano/5.G(sol).mp3"></audio>
+<audio data-KeyCode="74" src="piano/6.A(la).mp3"></audio>
+<audio data-KeyCode="75" src="piano/7.B(si).mp3"></audio>
 <script>
     window.addEventListener("keydown", function (e) {
         const key = document.querySelector(`.key[data-KeyCode="${e.keyCode}"]`);
@@ -65,6 +66,7 @@
         else{
             return
         }
+        audio.currentTime = 0;
         audio.play();
     })
 </script>
