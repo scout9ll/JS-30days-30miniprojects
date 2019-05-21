@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        :root{
+            --size:100;
+            --blur:10;
+            --base:#17f5d5;
+        }
+
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between ;
+            background-color:var(--base);
+
+        }
+        .controls{
+
+        }
+        .image{
+            margin: 30px;
+            height:calc(450px*var(--size)/100);
+            width: calc(755px*var(--size)/100);
+        }
+        img{
+            height:100%;
+            width: 100%;
+            filter:blur(calc(var(--blur)*1px));
+        /*  filter:blur(var(--blur)px);   数值与单位直接写在一起，这是无效的。必须使用calc()函数，将它们连接。*/
+        }
+    </style>
+</head>
+<body>
+<div class="controls">
+    <label for="size">
+        图片大小<input id="size" type="range" min="10" max="200" value="100" >
+    </label>
+    <br>
+    <label for="blur">
+        模糊程度<input id="blur" type="range" min="0" max="25" value="10" >
+    </label>
+</div>
+<div class="image">
+    <img src="http://img.qdaily.com/article/article_show/20190519192551ETywYe2JQpg8kmnH.jpg?imageMogr2/auto-orient/thumbnail/!755x450r/gravity/Center/crop/755x450/ignore-error/1" alt="">
+</div>
+<div>
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+</div>
+<script>
+    const inputs = document.querySelectorAll(`input`);
+
+    inputs.forEach(input => input.addEventListener(`change`, handleupdate))
+    inputs.forEach(input => input.addEventListener(`mousemove`, handleupdate))
+
+    function handleupdate(){
+        console.log(this.value);
+        document.documentElement.style.setProperty(`--${this.id}`,this.value)
+    }
+
+
+
+</script>
+</body>
+</html>
