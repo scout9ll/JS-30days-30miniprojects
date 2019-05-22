@@ -35,7 +35,8 @@
         box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
         color: white;
         justify-content: center;
-        align-items: center;
+        align-items:center;
+        text-align: center;
         /* Safari transitionend event.propertyName === flex */
         /* Chrome + FF transitionend event.propertyName === flex-grow */
         transition:
@@ -58,8 +59,7 @@
 
     .panel > * {
         margin: 0;
-        width: 100%;
-        transition: transform 0.5s;
+        transition: transform 1s cubic-bezier(0.61,-0.19, 0.7,-0.11);
 
     }
 
@@ -74,6 +74,19 @@
         font-size: 4em;
     }
 
+    .panel p:first-child{
+        transform: translateY(-100vh);
+    }
+    .panel.open p:first-child{
+        transform: translateY(0vh);
+    }
+    .panel p:last-child{
+        transform: translateY(100vh);
+    }
+
+    .panel.open p:last-child{
+        transform: translateY(0vh);
+    }
     .panel.open {
         font-size: 40px;
     }
@@ -113,19 +126,25 @@
 
 <script>
     function open() {
-        if(this.style.flex[0]==3){
+
+        if(this.style.flex[0]==5){
             console.log(this.style.flex);
             this.style.flex = 1;
+            this.classList.toggle("open")
         }
         else {
             panels.forEach(panel => panel.style.flex=1);
             this.style.flex = 5;
+            this.classList.toggle("open")
             console.log(this.style.flex);
+
         }
 
 
     }
+
     const panels = document.querySelectorAll(`.panel`);
+
 
     panels.forEach(panel => panel.addEventListener("click",open))
 
