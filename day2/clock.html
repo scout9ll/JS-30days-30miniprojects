@@ -4,47 +4,52 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        body{
+        body {
             display: flex;
             align-items: center;
             background: #27be88;
             min-height: 100vh;
             justify-content: center;
         }
-        .clock{
+
+        .clock {
             height: 200px;
             width: 200px;
-            border:20px solid burlywood;
+            border: 20px solid burlywood;
             border-radius: 50%;
             position: relative;
-            padding:100px;
+            padding: 100px;
         }
-        .hand{
+
+        .hand {
             transition-timing-function: cubic-bezier(0.93, -0.02, 0.13, 1.32);
-            position:absolute;
+            position: absolute;
             top: 50%;
-            right:50%;
+            right: 50%;
             transform-origin: 100% 100%;
         }
-        .sec{
-            width:46%;
-            height:5px;
+
+        .sec {
+            width: 46%;
+            height: 5px;
             background: whitesmoke;
-            transition:all 0.3s;
+            transition: all 0.3s;
             transform: rotate(90deg);
 
         }
-        .min{
-            width:40%;
-            height:5px;
+
+        .min {
+            width: 40%;
+            height: 5px;
             background: #17f5d5;
-            transition:all 1s;
+            transition: all 1s;
         }
-        .hour{
-            width:30%;
-            height:5px;
+
+        .hour {
+            width: 30%;
+            height: 5px;
             background: #f51d23;
-            transition:all 0.5s;
+            transition: all 0.5s;
         }
     </style>
 </head>
@@ -58,20 +63,22 @@
     const sechand = document.querySelector(".sec");
     const minhand = document.querySelector(".min");
     const hourhand = document.querySelector(".hour");
+
     function timePlay() {
         const now = new Date();
         const seconds = now.getSeconds();
         const mins = now.getMinutes();
         const hours = now.getHours()
-        const secDeg = ((seconds/60)+mins)*360+90;
-        const minDeg = (mins/60)*360+90;
-        const hourDeg = ((hours%12)/12)*360+90+(mins/60)*15;
-        sechand.style.transform =`rotate(${secDeg}deg)`
-        minhand.style.transform =`rotate(${minDeg}deg)`
-        hourhand.style.transform =`rotate(${hourDeg}deg)`
+        const secDeg = ((seconds / 60) + mins) * 360 + 90;
+        const minDeg = (mins / 60) * 360 + 90;
+        const hourDeg = ((hours % 12) / 12) * 360 + 90 + (mins / 60) * 15;
+        sechand.style.transform = `rotate(${secDeg}deg)`
+        minhand.style.transform = `rotate(${minDeg}deg)`
+        hourhand.style.transform = `rotate(${hourDeg}deg)`
 
     }
-    setInterval(timePlay,1000);
+
+    setInterval(timePlay, 1000);
 </script>
 </body>
 </html>

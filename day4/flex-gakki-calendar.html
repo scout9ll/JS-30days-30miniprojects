@@ -35,7 +35,7 @@
         background: #6B0F9C;
         box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.1);
         color: white;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         text-align: center;
         transition: font-size 0.7s cubic-bezier(0.61, -0.19, 0.7, -0.11),
@@ -47,6 +47,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
     }
 
     .panel1 {
@@ -74,36 +75,67 @@
         transition: transform 1s cubic-bezier(.84, .07, .75, 1.2);
 
     }
+    .calendar{
+        height:189px;
+        width: 200px;
+        background: url("gakki/Calendar.png") no-repeat 0 -60px;
+        transform-origin: 100% 0;
 
+    }
+    .jau{
+        background: url("gakki/Calendar.png") no-repeat 0 -60px;
+    }
+    .feb{
+        background: url("gakki/Calendar.png") no-repeat -267px -60px;
+    }
+    .mar{
+        background: url("gakki/Calendar.png") no-repeat -529px -60px;
+    }
+    .apr{
+        background: url("gakki/Calendar.png") no-repeat -791px -60px;
+    }
+    .may{
+        background: url("gakki/Calendar.png") no-repeat -0px -202px;
+    }
+    /*3rd row -468*/
     .panel p {
         text-transform: uppercase;
         font-family: 'Amatic SC', cursive;
         text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
         font-size: 2em;
+        transition: 0.1s;
     }
 
-    .panel p:nth-child(2) {
-        font-size: 4em;
-    }
-
-    .panel p:first-child {
-        transform: translateY(-100vh);
-    }
-
-    .panel.open p:first-child {
-        transform: translateY(0vh);
-    }
+    /*.panel p:nth-child(2) {*/
+    /*    font-size: 1em;*/
+    /*}*/
 
     .panel p:last-child {
         transform: translateY(100vh);
     }
 
-    .panel.open p:last-child {
-        transform: translateY(0vh);
+    .panel:hover p:last-child {
+        transform: translateY(-10vh);
     }
 
+    .panel .calendar{
+        transform: rotate(180deg);
+    }
+    .panel.open .calendar{
+        transform: rotate(0deg) translateX(100px);
+
+    }
+
+    /*.panel p:last-child {*/
+    /*    transform: translateY(100vh);*/
+    /*}*/
+
+    /*.panel.open p:last-child {*/
+    /*    transform: translateY(0vh);*/
+    /*}*/
+
     .panel.open {
-        font-size: 40px;
+        flex:5;
     }
 
 </style>
@@ -111,44 +143,50 @@
 
 
 <div class="panels">
+
     <div class="panel panel1">
-        <p>Hey</p>
-        <p>Let's</p>
-        <p>Dance</p>
+        <div class="calendar jau">
+
+        </div>
+        <p>January</p>
     </div>
     <div class="panel panel2">
-        <p>Give</p>
-        <p>Take</p>
-        <p>Receive</p>
+        <div class="calendar feb">
+
+        </div>
+        <p>February</p>
     </div>
     <div class="panel panel3">
-        <p>Experience</p>
-        <p>It</p>
-        <p>Today</p>
+        <div class="calendar mar">
+
+        </div>
+        <p>march</p>
     </div>
     <div class="panel panel4">
-        <p>Give</p>
-        <p>All</p>
-        <p>You can</p>
+        <div class="calendar apr">
+
+        </div>
+        <p>april</p>
     </div>
     <div class="panel panel5">
-        <p>Life</p>
-        <p>In</p>
-        <p>Motion</p>
+        <div class="calendar may">
+
+        </div>
+        <p>march</p>
     </div>
+
 </div>
 
 <script>
     function open() {
 
-        if (this.style.flex[0] == 5) {
-            console.log(this.style.flex);
-            this.style.flex = 1;
-            this.classList.toggle("open")
+        if (this.classList.contains("open")) {
+            this.classList.toggle("open");
+            console.log("this.style.flex");
+
         } else {
-            panels.forEach(panel => panel.style.flex = 1);
-            this.style.flex = 5;
-            this.classList.toggle("open")
+            panels.forEach(panel => panel.classList.remove("open"));
+            this.classList.toggle("open");
             console.log(this.style.flex);
 
         }
