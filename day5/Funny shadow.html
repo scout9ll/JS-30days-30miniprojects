@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse Shadow</title>
+</head>
+<body>
+
+<div class="hero">
+    <h1 contenteditable>🔥抖音</h1>
+</div>
+
+<style>
+
+    html {
+        color: black;
+        font-family: sans-serif;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+    }
+
+    h1 {
+        text-shadow: 0 0 0 rgba(0, 0, 0, 1);
+        font-size: 100px;
+    }
+</style>
+
+<script>
+    const hero = document.querySelector(".hero");
+    const text = hero.querySelector("h1");
+
+    function shadow(e) {
+        const {offsetWidth: width, offsetHeight: height} = hero;
+        let {offsetX: x, offsetY: y} = e;
+        //传入的e是mousemove事件对象，当选中子元素时，event.target则是子元素h1
+        //然后通过事件冒泡找到被监听的父元素Hero.
+
+        if (e.target == text) {
+            x = x + e.target.offsetLeft;
+            y = y + e.target.offsetTop;
+
+        }
+
+        const shadowX = -(x - width / 2) / 20;
+        const shadowY = -(y - height / 2) / 20;
+        text.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(16,231,231,0.7),
+                                 ${shadowX * -1}px ${shadowY * -1}px 0 rgba(254,44,85,0.7)`
+
+    }
+
+    hero.addEventListener(`mousemove`, shadow)
+
+</script>
+</body>
+</html>
