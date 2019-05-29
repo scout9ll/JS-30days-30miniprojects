@@ -32,10 +32,10 @@ function Ball(x, y, speedX, speedY, radius, color) {
     }
     this.update = function() {
         this.draw()
-        if (this.x + 1 > innerWidth || this.x - 1 < 0) {
+        if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
             this.SpdX = -this.SpdX;
         }
-        if (this.y + 1 > innerHeight || this.y - 1 < 0) {
+        if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
             this.SpdY = -this.SpdY;
         }
         this.x = this.x + this.SpdX;
