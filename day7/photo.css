@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+* a {
+    text-decoration: none;
+    text-decoration-style: none;
+    color: white;
+}
+
+body {
+    background-color: black;
+}
+
+.banner {
+    background: url(img/banner.png) center;
+    height: 800px;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    font: 16px;
+}
+
+.nav-logo {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.nav-logo .circle {
+    transition: all 5s;
+}
+
+.nav-logo:hover .circle {
+    transform: rotateZ(360deg)
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+}
+
+.nav-list a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    margin-right: 50px;
+    padding: 10px;
+    color: gainsboro;
+    opacity: 0.8;
+    font-size: 16px;
+    overflow: hidden;
+    transition: 0.5s all;
+    /*只有快元素才能Overflow*/
+}
+
+.nav-list a:before {
+    content: "";
+    bottom: 0;
+    width: 20px;
+    position: absolute;
+    border-bottom: 4px solid rgb(138, 16, 16);
+    right: 100px;
+    transition: 0.5s all;
+}
+
+.nav-list a:hover {
+    color: white;
+    opacity: 1;
+}
+
+.nav-list a:hover:before {
+    right: 0;
+}
+
+.exhibition-head {
+    text-align: center;
+    margin: 20px;
+}
+
+.exhibition-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.exhibition-content a {
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+.exhibition-content img {
+    margin: 5px;
+    transition: all 0.5s ease-in-out;
+}
+
+.exhibition-content .name {
+    position: absolute;
+    display: block;
+    top: -200px;
+    left: 45%;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    color: rgb(138, 16, 16);
+}
+
+.exhibition-content .data {
+    position: absolute;
+    display: block;
+    bottom: -200px;
+    left: 40%;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    color: wheat;
+}
+
+.exhibition-content a:hover .name {
+    top: 100px
+}
+
+.exhibition-content a:hover .data {
+    bottom: 100px
+}
+
+.exhibition-content a:hover img {
+    filter: sepia(70%);
+    transform: scale(0.9);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: [full-start] 1fr [main-start] 1200px [main-end] 1fr [full-end];
+}
+
+.full {
+    grid-column: full
+}
+
+.main {
+    grid-column: main
+}
+
+.tip {
+    margin-top: 30px;
+    grid-column: full;
+    display: flex;
+    background: linear-gradient( black, rgb(97, 3, 3), red);
+    color: whitesmoke;
+    font-size: 18px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s;
+    clip-path: polygon(50% 10%, 100% 50%, 50% 90%, 0 50%);
+    text-decoration: none;
+}
+
+.more-head {
+    grid-column: full;
+    color: red;
+    text-align: center;
+}
+
+.more-scheme {
+    grid-column: main;
+    display: flex;
+    justify-content: space-between;
+}
+
+.more-scheme a {
+    position: relative;
+    margin: 40px 0;
+    display: block;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.more-scheme .flex-left a {
+    transform: translateX(-1000px)
+}
+
+.more-scheme .flex-right a {
+    transform: translateX(2000px)
+}
+
+.more-scheme.flex .slide {
+    transform: translateX(0%);
+    opacity: 1
+}
+
+.more-scheme .tag {
+    width: 100%;
+    position: absolute;
+    bottom: -100px;
+    transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background-color: black;
+    color: red;
+    opacity: 0.7;
+    font-size: 18px;
+    clip-path: circle(40%, )
+}
+
+.more-scheme .tag .WelName {
+    margin-right: 150px;
+}
+
+.more-scheme a:hover .tag {
+    bottom: 0px;
+}
+
+.about-us {
+    justify-self: center;
+}
+
+.about-us img {
+    position: relative;
+    right: 20px;
+}
+
+.contract {
+    margin-top: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    opacity: 0.7;
+    font-size: 14px;
+}
+
+.contract p {
+    margin: 20px 2px;
+}
+
+.contract ul a {
+    margin: 10px 5.5px;
+    transition: all 1s;
+    filter: brightness(100%);
+}
+
+.contract ul a:hover {
+    filter: brightness(200%)
+}
+
+footer {
+    display: grid;
+    background-color: rgba(53, 51, 51, 0.651);
+    height: 80px;
+    color: whitesmoke;
+    font-size: 12px;
+    margin-top: 30px;
+    place-content: center;
+}
