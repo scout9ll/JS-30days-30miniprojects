@@ -1,0 +1,32 @@
+body {
+    background-color: salmon;
+}
+
+.empty {
+    display: inline-block;
+    height: 150px;
+    width: 150px;
+    margin: 20px;
+    border: solid yellow 2px;
+
+}
+
+.fill {
+    position: relative;
+    height: 150px;
+    width: 150px;
+    cursor: pointer;
+    background: url("http://source.unsplash.com/random/150x150");
+}
+
+.hovered {
+    transform: scale(1.1);
+}
+
+.hold {
+    border: white dashed 2px;
+}
+
+.invisible {
+    display: none;
+}
