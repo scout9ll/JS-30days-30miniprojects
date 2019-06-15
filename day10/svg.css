@@ -1,0 +1,33 @@
+body {
+    background-color: #fff;
+    transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
+}
+
+body.dark {
+    background-color: black;
+}
+.mode{
+    color:black;
+    
+}
+.mode.dark{
+    color:silver;
+    content:"Moon Mode";
+}
+svg ,svg path{
+    transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+svg.dark {
+    transform: rotate(-30deg);
+}
+
+svg.dark path {
+    fill: yellow;
+    d: path( "M36.5 72C36.5 111.765 72 144 72 144C32.2355 144 0 111.765 0 72C0 32.2355 32.2355 0 72 0C72 0 36.5 32.2355 36.5 72Z")
+}
