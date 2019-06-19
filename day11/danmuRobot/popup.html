@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Popup</title>
+    <link href="popup.css" rel="stylesheet" type="text/css" />
+  </head>
+  <style>
+    :root {
+      --period: 3;
+    }
+    body {
+      height: 400px;
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+    }
+    .ipt-danmu {
+      height: 40px;
+    }
+    .surfing {
+      font-size: 40px;
+      animation: surf calc(var(--period) * 0.5s) linear infinite;
+    }
+    .onoff-control {
+      display: flex;
+      justify-content: space-between;
+    }
+    textarea {
+      display: none;
+      max-height: 0;
+      transition: all 0.5s linear;
+    }
+    .time {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      vertical-align: center;
+    }
+    .ipt-time {
+      width: 70px;
+      height: 20px;
+      margin-right: 50px;
+    }
+    .time span {
+      font-size: 30px;
+    }
+    @keyframes surf {
+      0% {
+        transform: rotate(30deg) translateX(0px) translateY(0px);
+      }
+      33% {
+        transform: rotate(60deg) translateX(10px) translateY(6px);
+      }
+      66% {
+        transform: rotate(10deg) translateX(-10px) translateY(-6px);
+      }
+      100% {
+        transform: rotate(30deg) translateX(0px) translateY(0px);
+      }
+    }
+  </style>
+  <body>
+    <div id="title">独轮车之王</div>
+    <span class="surfing"> 🏄</span>
+    <div class="mode-control">
+      自定弹幕<input type="radio" name="mode" value="custom" /> 跟踪<input
+        type="radio"
+        name="mode"
+        value="last"
+      />
+      随机<input type="radio" name="mode" value="random" />
+    </div>
+    <textarea
+      class="ipt-danmu"
+      placeholder="自定义弹幕,多条弹幕请用@打断"
+      type="text"
+    ></textarea>
+    <div class="time">
+      <input
+        class="ipt-time"
+        placeholder="默认为3秒"
+        type="range"
+        min="1"
+        max="60"
+        value="10"
+      />
+      <span> 弹幕间隔</span>
+    </div>
+    <div class="onoff-control">
+      <button class="btn-start">start</button
+      ><button class="btn-end">end</button>
+    </div>
+  </body>
+  <script src="./jquery.min.js"></script>
+  <script src="popup.js"></script>
+</html>
+<!DOCTYPE html>
