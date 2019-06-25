@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100vh;
+      }
+      .big {
+        height: 300px;
+        width: 300px;
+        overflow: hidden;
+      }
+      .origin {
+        width: calc((755 / 2) * 1px);
+        height: calc((450 / 2) * 1px);
+        position: relative;
+      }
+      .origin img {
+        height: 100%;
+        width: 100%;
+      }
+      .magnifier {
+        position: absolute;
+        height: 150px;
+        width: 150px;
+        display: none;
+        background-color: royalblue;
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="origin">
+      <img
+        src="http://img.qdaily.com/article/article_show/20190519192551ETywYe2JQpg8kmnH.jpg?imageMogr2/auto-orient/thumbnail/!755x450r/gravity/Center/crop/755x450/ignore-error/1"
+        alt=""
+      />
+      <div class="magnifier"></div>
+    </div>
+    <div class="big">
+      <img
+        src="http://img.qdaily.com/article/article_show/20190519192551ETywYe2JQpg8kmnH.jpg?imageMogr2/auto-orient/thumbnail/!755x450r/gravity/Center/crop/755x450/ignore-error/1"
+        alt=""
+      />
+    </div>
+  </body>
+  <script>
+    const originImg = document.querySelector(".origin img");
+    const bigImg = document.querySelector(".big img");
+
+    originImg.parentNode.addEventListener("mousemove", magnify);
+    originImg.parentNode.addEventListener(
+      "mouseleave",
+      () => (originImg.nextElementSibling.style.display = "none")
+    );
+
+    function magnify(e) {
+      //   e.stopPropagation();
+      console.log(e.pageX);
+      originImg.nextElementSibling.style.display = "block";
+      let moveX, moveY;
+      let relX = e.pageX - this.offsetLeft;
+      let relY = e.pageY - this.offsetTop;
+      console.log(relX, relY);
+      if (relX < 75) {
+        moveX = 0;
+      } else if (relX > this.offsetWidth - 75) {
+        moveX = this.offsetWidth - 150;
+      } else {
+        moveX = relX - 75;
+      }
+      if (relY < 75) {
+        moveY = 0;
+      } else if (relY > this.offsetHeight - 75) {
+        moveY = this.offsetHeight - 150;
+      } else {
+        moveY = relY - 75;
+      }
+      originImg.nextElementSibling.style.left = moveX + "px";
+      originImg.nextElementSibling.style.top = moveY + "px";
+
+      bigImg.style.transform = `translateY(${-moveY *
+        2}px) translateX(${-moveX * 2}px)`;
+    }
+  </script>
+</html>
