@@ -9,139 +9,31 @@
     <style>
       body {
         background: linear-gradient(to right, #e9d362, #333333);
+        display: grid;
+        place-content: center;
       }
       canvas {
-        position: absolute;
+        position: fixed;
 
         top: 0;
         left: 0;
-
+        height: 100vh;
+        width: 100vw;
         z-index: -100;
       }
     </style>
   </head>
   <body>
-    <audio src="./Hello Nico - 接下来如何.flac" controls="controls"></audio>
-    <button class="play">test</button> <button class="pause">test</button>
-    <canvas> </canvas>
+    <div class="player">
+      <audio
+        src="./ワルキューレ - ワルキューレがとまらない.flac"
+        controls="controls"
+      ></audio>
+      <button class="normalBar">normalBar</button>
+      <button class="circleBar">circleBar</button>
+      <button class="ball">ball</button>
+    </div>
+    <canvas></canvas>
   </body>
-  <script>
-    let isPlay = true;
-    let stream, //audio 元素
-      audioCtx, // audio context
-      analyser, // 音频分析器
-      source, // 声音源
-      bufferLength, //频率个数
-      dataArray, //频率数组
-      CircleList = [],
-      canvas = document.querySelector("canvas"),
-      canvasCtx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const colorList = [
-      "#F7B2B78a",
-      "#F7717D8a",
-      "#DE639A8a",
-      "#7F29828a",
-      "#16001E8a"
-    ];
-    // connect不能初始化时执行,需要某个事件触发
-    document.querySelector(".play").addEventListener("click", function() {
-      // Setup all nodes
-      stream = document.querySelector("audio");
-      stream.crossOrigin = "anonymous";
-      audioCtx = new AudioContext();
-      analyser = audioCtx.createAnalyser();
-      source = audioCtx.createMediaElementSource(stream);
-      source.connect(analyser);
-      analyser.connect(audioCtx.destination);
-      analyser.fftSize = 128;
-      bufferLength = analyser.frequencyBinCount; //通过256的密度的傅里叶变化后得到的可分辨的频率数 =128
-      for (let i = 0; i < bufferLength; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        let speedX = (Math.random() - 0.5) * 1;
-        let speedY = (Math.random() - 0.5) * 1;
-        let color = colorList[Math.floor(Math.random() * colorList.length)];
-        let radius = 0;
-        CircleList.push(new MusicBall(x, y, speedX, speedY, radius, color));
-      }
-      console.log(CircleList);
-      // stream.play();
-      rockMusic();
-    });
-    document.querySelector(".pause").addEventListener("click", function() {
-      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-      isPlay = false;
-    });
-    // 音球对象
-    class MusicBall {
-      constructor(x, y, speedX, speedY, radius, color) {
-        this.x = x;
-        this.y = y;
-        this.SpdX = speedX;
-        this.SpdY = speedY;
-        this.radius = radius;
-        this.color = color;
-      }
-      draw() {
-        canvasCtx.beginPath(); //每次begin后，会自动标记并跟踪变化
-
-        canvasCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        canvasCtx.fillStyle = this.color;
-        canvasCtx.fill();
-      }
-      update(frequencyVolume) {
-        this.draw();
-        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
-          this.SpdX = -this.SpdX;
-          this.x = this.x + this.SpdX;
-        }
-        if (this.y + this.radius > canvas.heyight || this.y - this.radius < 0) {
-          this.SpdY = -this.SpdY;
-          this.y = this.y + this.SpdY;
-        }
-        this.x = this.x + this.SpdX;
-        this.y = this.y + this.SpdY;
-        this.radius =
-          frequencyVolume - 90 > 0 ? (frequencyVolume - 90) * 1.5 : 0;
-      }
-    }
-
-    // frame方法
-    function rockMusic() {
-      if (!isPlay) {
-        return;
-      }
-      requestAnimationFrame(rockMusic);
-      dataArray = new Uint8Array(bufferLength); //生成8位为一个item长度为bufferLength的array
-      analyser.getByteFrequencyData(dataArray); //  将频率导入到该array
-      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-      CircleList.forEach((circle, index) => {
-        circle.update(dataArray[index]);
-        // console.log(circle, dataArray[index]);
-      });
-    }
-
-    // music bar
-    function drawMusic() {
-      if (!isPlay) {
-        return;
-      }
-
-      requestAnimationFrame(drawMusic);
-      var dataArray = new Uint8Array(bufferLength); //生成8位为一个item长度为bufferLength的array
-      analyser.getByteFrequencyData(dataArray); //  将频率导入到该array
-      canvasCtx.clearRect(0, 0, canvas.width, canvas.height); //画布的起始点0,0
-      console.log(dataArray);
-
-      const bar_w = canvas.width / bufferLength;
-      for (let i = 0; i < bufferLength; i++) {
-        const bar_x = i * bar_w;
-        const bar_h = (dataArray[i] / 255) * canvas.height;
-        canvasCtx.fillStyle = `rgba(63, 99, 191, ${i / 100})`;
-        canvasCtx.fillRect(bar_x, canvas.height - bar_h, bar_w, bar_h);
-      }
-    }
-  </script>
+  <script src="./soundVisualizer.js"></script>
 </html>
