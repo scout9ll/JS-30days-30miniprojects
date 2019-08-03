@@ -146,6 +146,6 @@ document.querySelector(".ball").addEventListener("click", () => {
   audioCtx.resume().then(() => rockMusic(MusicBall.drawBall));
 });
 
-document.querySelector("audio").addEventListener("pause", () => {
-  frameID ? cancelAnimationFrame(frameID) : "";
-});
+// document.querySelector("audio").addEventListener("pause", () => {
+//   frameID ? cancelAnimationFrame(frameID) : "";
+// });
