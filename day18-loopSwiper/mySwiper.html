@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    .swiper {
+      width: 500px;
+      overflow: hidden;
+      border: 2px seagreen solid;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+    .wrapper {
+      transition: all ease 0s;
+      display: flex;
+    }
+    .wrapper .slide {
+      width: 500px;
+      /* flex-shrink默认为1所以设宽也会自动缩小 */
+      flex-shrink: 0;
+      text-align: center;
+      height: 100%;
+      position: relative;
+      height: 500px;
+    }
+    div.slide:nth-child(odd) {
+      background-color: firebrick;
+    }
+    .left-arrow {
+      position: absolute;
+      left: 0;
+      top: 50%;
+    }
+    .right-arrow {
+      position: absolute;
+      right: 0;
+      top: 50%;
+    }
+  </style>
+  <div>
+    <div class="swiper">
+      <div class="wrapper">
+        <div class="slide">1</div>
+        <div class="slide">2</div>
+        <div class="slide">3</div>
+        <div class="slide">4</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    class Swiper {
+      constructor(target, options) {
+        this.target = document.querySelector(target);
+        // this.slide = target.querySelectorAll();
+        this.wrapper = this.target.querySelector(".wrapper");
+        this.slides = [...this.wrapper.querySelectorAll(".slide")];
+        this.slideLen = this.slides.length;
+        this.count = 0;
+        this.step = this.target.offsetWidth;
+        this.timer = 0;
+        this.loop = false;
+        this.arrow = options.arrow;
+        this.initSwiper(options);
+      }
+      static throttle(fn, timeout, ...args) {
+        let canPass = true;
+
+        return function() {
+          console.log(this, args);
+          if (canPass) {
+            fn(...args);
+            canPass = false;
+            setTimeout(() => (canPass = true), timeout);
+          }
+        };
+      }
+      initSwiper(options) {
+        this.arrow ? this.initArrow() : "";
+
+        switch (options.mode) {
+          case "auto":
+            this.autoPlay();
+            break;
+          case "auto-loop":
+            this.initLoop();
+            this.autoPlay();
+            break;
+          case "maual-loop":
+            this.initLoop();
+            this.initButton();
+          default:
+            break;
+        }
+      }
+      slide(action, number) {
+        console.log(action, number);
+        switch (action) {
+          case "add":
+            this.count += number;
+            break;
+          case "reduce":
+            this.count -= number;
+            break;
+          default:
+            break;
+        }
+        this.wrapper.style.transitionDuration = "2s";
+        // 当count 等于length时,则应该返回
+        if (this.loop) {
+          console.log("looping");
+          if (this.count == this.slideLen + 2) {
+            this.wrapper.style.transitionDuration = "0s";
+            this.count = 1;
+            setTimeout(() => {
+              this.wrapper.style.transitionDuration = "2s";
+              this.count = 2;
+              this.wrapper.style.transform = `translateX(-${this.count *
+                this.step}px)`;
+            }, 0);
+          } else if (this.count == -1) {
+            this.wrapper.style.transitionDuration = "0s";
+            this.count = this.slideLen + 2 - 2;
+            setTimeout(() => {
+              this.wrapper.style.transitionDuration = "2s";
+              this.count = this.slideLen - 1;
+              this.wrapper.style.transform = `translateX(-${this.count *
+                this.step}px)`;
+            }, 0);
+          }
+        } else if (!this.loop && this.count == this.slideLen) {
+          this.wrapper.style.transitionDuration = "0s";
+          this.count = 0;
+        }
+        this.wrapper.style.transform = `translateX(-${this.count *
+          this.step}px)`;
+      }
+      initButton() {
+        this.target.addEventListener("click", this.slide.bind(this));
+      }
+      initArrow() {
+        const leftArrow = document.createElement("div");
+        const rightArrow = document.createElement("div");
+        this.target.append(leftArrow);
+        this.target.append(rightArrow);
+        rightArrow.addEventListener(
+          "click",
+          Swiper.throttle(this.slide.bind(this), 2000, "add", 1)
+        );
+        leftArrow.addEventListener(
+          "click",
+          Swiper.throttle(this.slide.bind(this), 2000, "reduce", 1)
+        );
+
+        leftArrow.className = "left-arrow";
+        rightArrow.className = "right-arrow";
+
+        leftArrow.innerText = "<";
+
+        rightArrow.innerText = ">";
+      }
+      initLoop() {
+        this.loop = true;
+        console.log(this.slides, this.slides[this.slideLen - 1]);
+        this.wrapper.insertBefore(
+          this.slides[this.slideLen - 1].cloneNode(true),
+          this.slides[0]
+        );
+        this.wrapper.append(this.slides[0].cloneNode(true));
+      }
+      autoPlay() {
+        if (this.loop) {
+          this.count = 1;
+          this.wrapper.style.transform = `translateX(-${this.count *
+            this.step}px)`;
+        }
+
+        this.target.addEventListener("mouseenter", () => {
+          clearInterval(this.timer);
+          console.log("stop", this);
+        });
+        this.target.addEventListener(
+          "mouseleave",
+
+          () => {
+            console.log("begin");
+            this.timer = setInterval(this.slide.bind(this, "add", 1), 3000);
+          }
+        );
+        this.timer = setInterval(this.slide.bind(this, "add", 1), 3000);
+      }
+    }
+
+    const test = new Swiper(".swiper", { mode: "auto-loop", arrow: true });
+  </script>
+</html>
