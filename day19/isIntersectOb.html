@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    .tall-man {
+    }
+    img {
+      /* margin-bottom: 30px; */
+      transform: translateX(50%);
+      transition: 1s all;
+      width: 100vw;
+    }
+    .on {
+      transform: translateX(0);
+    }
+  </style>
+  <body>
+    <div class="tall-man">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, quo
+      sit! Animi omnis iure, aliquid quibusdam repellendus rerum! In numquam
+      facilis impedit tempora voluptatibus, nostrum beatae dolorum quaerat
+      blanditiis odit! Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      Sapiente, quo sit! Animi omnis iure, aliquid quibusdam repellendus rerum!
+      In numquam facilis impedit tempora voluptatibus, nostrum beatae dolorum
+      quaerat blanditiis odit!
+    </div>
+    <img data-lazy="../day4/gakki/1.jpg" />
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, quo sit!
+    Animi omnis iure, aliquid quibusdam repellendus rerum! In numquam facilis
+    impedit tempora voluptatibus, nostrum beatae dolorum quaerat blanditiis
+    odit!
+    <img data-lazy="../day4/gakki/2.jpg" />
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
+    recusandae ducimus dolore quisquam veritatis aliquam iste mollitia saepe
+    harum similique reprehenderit, doloremque inventore odit iusto. Placeat
+    nobis ipsum amet! Aliquam? Voluptate voluptas alias sed maiores, officia
+    iusto autem consequatur incidunt sequi, optio quasi eaque tenetur laboriosam
+    quibusdam atque saepe quod laborum at, sunt eveniet temporibus corporis
+    expedita dolor. Harum, voluptatem! Cupiditate voluptate similique deleniti
+    enim tempore totam itaque? Vitae quibusdam accusamus possimus, maiores quos
+    nobis architecto aut tenetur aspernatur fuga aperiam harum quam adipisci
+    quis nulla at laboriosam impedit eveniet. Repellat ex ab suscipit? Quia rem
+    modi fuga deserunt ab, eligendi dolores asperiores quaerat, consequuntur
+    possimus explicabo expedita quis cum voluptate obcaecati in. Nisi fuga,
+    obcaecati pariatur nobis neque deserunt. Ratione perferendis autem
+    consectetur ipsum porro reiciendis dolorem velit praesentium molestiae
+    ducimus ad architecto ut aperiam, voluptatem commodi magni amet saepe!
+    Repudiandae nam dignissimos autem facere cumque natus consequuntur sunt.
+    <img data-lazy="../day4/gakki/3.jpg" />
+    quis nulla at laboriosam impedit eveniet. Repellat ex ab suscipit? Quia rem
+    modi fuga deserunt ab, eligendi dolores asperiores quaerat, consequuntur
+    possimus explicabo expedita quis cum voluptate obcaecati in. Nisi fuga,
+    obcaecati pariatur nobis neque deserunt. Ratione perferendis autem
+    consectetur ipsum porro reiciendis dolorem velit praesentium molestiae
+    ducimus ad architecto ut aperiam, voluptatem commodi magni amet saepe!
+    <img data-lazy="../day4/gakki/4.jpg" />
+  </body>
+  <script>
+    const imgs = document.querySelectorAll("[data-lazy]");
+    const obImg = target => {
+      const ob = new IntersectionObserver(([entry, ...entrys]) => {
+        console.log(entry);
+        if (entry.isIntersecting) {
+          entry.target.src = entry.target.dataset.lazy;
+          entry.target.classList.add("on");
+          ob.disconnect();
+        }
+      });
+      ob.observe(target);
+    };
+
+    imgs.forEach(obImg);
+  </script>
+</html>
