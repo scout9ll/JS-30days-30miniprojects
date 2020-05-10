@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- prefetch提前下载该文件buffer，但不会立即解码该文件 -->
+    <link rel="prefetch" href="https://w.wallhaven.cc/full/j5/wallhaven-j5k825.jpg" as="image" type="image/jpg">
+    <!-- preload提前下载并解码执行该文件buffer-->
+    <link rel="preload" href="https://w.wallhaven.cc/full/wy/wallhaven-wyv9qx.jpg" as="image" type="image/jpg">
+
+</head>
+
+<body>
+    <img src="" alt="" id="img">
+
+</body>
+<script>
+    const IMGS = [
+        "https://w.wallhaven.cc/full/n6/wallhaven-n639z7.jpg",
+        "https://w.wallhaven.cc/full/k9/wallhaven-k9x186.jpg",
+        "https://w.wallhaven.cc/full/wy/wallhaven-wyv9qx.jpg",
+        "https://w.wallhaven.cc/full/5w/wallhaven-5w6319.jpg",
+        "https://w.wallhaven.cc/full/j5/wallhaven-j5k825.jpg"
+    ]
+    const currentImg = document.querySelector('#img')
+    
+    currentImg.src = IMGS[0]
+    function changeImg(e) {
+        const currentIdx = IMGS.indexOf(e.target.src)
+        const nextIdx = (currentIdx + 1) % IMGS.length
+        console.log(currentIdx, nextIdx);
+
+        console.log(IMGS[nextIdx]);
+
+        e.target.src = IMGS[nextIdx]
+    }
+
+    currentImg.addEventListener('click', changeImg)
+</script>
+
+</html>
