@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    function encodeMsg(str) {
+      //仿照 ws里边的 16位数据生成
+      str = str + "\0";
+      var len = str.length;
+      var buffer = new ArrayBuffer(len + 12); // 生成字节长度为len + 12的arrayBuffer,默认充填为[0x00,0x00,0x00....]
+
+      // 通过new DataView 提供处理buffer的解释器的接口,setInt*第三个参数为是否小端序（littleEndian）存储
+      new DataView(buffer).setInt16(0, len + 8, true); // 从第0个字节后开始储存一个16-bit数(短整型，2个字节)
+      new DataView(buffer).setInt16(4, len + 8, true); // 从第4个字节后开始储存一个16-bit数(短整型，2个字节)
+      new DataView(buffer).setInt16(8, 689, true); //从第8个字节后开始存储
+
+      var bufView = new Uint8Array(buffer, 12);
+      for (var i = 0; i < len; i++) {
+        bufView[i] = str.charCodeAt(i); //返回字符在UTF-16代码单元
+      }
+      return buffer;
+    }
+    
+    function connectDYDanmu(roomId) {
+      const socket = new WebSocket("wss://danmuproxy.douyu.com:8502/");
+      const loginGroupMsg = "type@=joingroup/rid@=1126960/gid@=-9999/";
+      const heartbeatMsg = "type@=mrkl/";
+      const loginMsg = `type@=loginreq/roomid@=${roomId}/`;
+      console.log(encodeMsg(loginMsg));
+
+      // Connection opened
+      socket.addEventListener("open", function (event) {
+        socket.send(encodeMsg(loginMsg));
+        setTimeout(() => {
+          socket.send(encodeMsg(loginGroupMsg));
+        }, 3000);
+        setInterval(() => {
+          socket.send(encodeMsg(heartbeatMsg));
+        }, 1000 * 15);
+      });
+      // Listen for messages
+      socket.addEventListener("message", function (event) {
+        console.log("Message from server ", event.data);
+      });
+    }
+
+    connectDYDanmu(241123)
+  </script>
+</html>
