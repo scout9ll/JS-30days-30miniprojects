@@ -8,16 +8,18 @@
   </head>
   <body></body>
   <script>
+
+    // 根据斗鱼弹幕协议头编码发送数据
     function encodeMsg(str) {
-      //仿照 ws里边的 16位数据生成
       str = str + "\0";
       var len = str.length;
       var buffer = new ArrayBuffer(len + 12); // 生成字节长度为len + 12的arrayBuffer,默认充填为[0x00,0x00,0x00....]
 
       // 通过new DataView 提供处理buffer的解释器的接口,setInt*第三个参数为是否小端序（littleEndian）存储
-      new DataView(buffer).setInt16(0, len + 8, true); // 从第0个字节后开始储存一个16-bit数(短整型，2个字节)
-      new DataView(buffer).setInt16(4, len + 8, true); // 从第4个字节后开始储存一个16-bit数(短整型，2个字节)
-      new DataView(buffer).setInt16(8, 689, true); //从第8个字节后开始存储
+      const dataView = new DataView(buffer)
+      dataView.setInt16(0, len + 8, true); // 从第0个字节后开始储存一个16-bit数(短整型，2个字节)
+      dataView.setInt16(4, len + 8, true); // 从第4个字节后开始储存一个16-bit数(短整型，2个字节)
+      dataView.setInt16(8, 689, true); //从第8个字节后开始存储
 
       var bufView = new Uint8Array(buffer, 12);
       for (var i = 0; i < len; i++) {
@@ -26,6 +28,7 @@
       return buffer;
     }
     
+    // 根据斗鱼弹幕服务器连接规则进行连接请求和心跳
     function connectDYDanmu(roomId) {
       const socket = new WebSocket("wss://danmuproxy.douyu.com:8502/");
       const loginGroupMsg = "type@=joingroup/rid@=1126960/gid@=-9999/";
