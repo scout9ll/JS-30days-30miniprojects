@@ -6,9 +6,16 @@
     <meta name="referrer" content="no-referrer" />
     <title>Document</title>
   </head>
+  <style>
+    .danmu {
+      position: absolute;
+      left: 0;
+      padding: 20px;
+      transform: translateX(0);
+    }
+  </style>
   <body></body>
   <script>
-
     // 根据斗鱼弹幕协议头编码发送数据
     function encodeMsg(str) {
       str = str + "\0";
@@ -16,7 +23,7 @@
       var buffer = new ArrayBuffer(len + 12); // 生成字节长度为len + 12的arrayBuffer,默认充填为[0x00,0x00,0x00....]
 
       // 通过new DataView 提供处理buffer的解释器的接口,setInt*第三个参数为是否小端序（littleEndian）存储
-      const dataView = new DataView(buffer)
+      const dataView = new DataView(buffer);
       dataView.setInt16(0, len + 8, true); // 从第0个字节后开始储存一个16-bit数(短整型，2个字节)
       dataView.setInt16(4, len + 8, true); // 从第4个字节后开始储存一个16-bit数(短整型，2个字节)
       dataView.setInt16(8, 689, true); //从第8个字节后开始存储
@@ -27,7 +34,7 @@
       }
       return buffer;
     }
-    
+
     // 根据斗鱼弹幕服务器连接规则进行连接请求和心跳
     function connectDYDanmu(roomId) {
       const socket = new WebSocket("wss://danmuproxy.douyu.com:8502/");
@@ -47,11 +54,64 @@
         }, 1000 * 15);
       });
       // Listen for messages
-      socket.addEventListener("message", function (event) {
-        console.log("Message from server ", event.data);
-      });
+      socket.addEventListener("message", DanmuAssembler);
     }
 
-    connectDYDanmu(241123)
+    // 装配弹幕对象
+    async function DanmuAssembler(event) {
+      // console.log("Message from server ", event.data);
+      // var textPromise = blob.text();
+
+      // blob.text().then(text => /* do something with the text */);
+      const blob = event.data;
+      var text = await blob.text();
+      if (true) {
+        // console.log(text.split("/"));
+        const msgObj = text.split("/").reduce((origin, item) => {
+          let [key, value] = item.split("@=");
+          if (key.includes("type")) {
+            key = "type";
+          }
+          if (!value) return origin;
+          Object.assign(origin, { [key]: value });
+          return origin;
+        }, {});
+        if (msgObj.type == "chatmsg") {
+          console.table(msgObj.nn, msgObj.txt);
+          DanmuDomGenerator(msgObj);
+        }
+
+        canLog = false;
+      }
+    }
+
+    //生成弹幕dom
+
+    function DanmuDomGenerator(msgObj) {
+      const Ddom = document.createElement("span");
+      const Body = document.querySelector("body");
+      Ddom.style.top = danmuTopLevel * 40 + "px";
+      danmuTopLevel = danmuTopLevel == 10 ? 0 : danmuTopLevel + 1;
+      Ddom.textContent = msgObj.txt;
+      Ddom.className = "danmu";
+      const slideTime = Math.floor(Math.random() * 7) + 3;
+      // console.error(msgObj.nn, msgObj.txt,slideTime);
+      Ddom.style.transition = `all ${slideTime}s linear`;
+      Body.appendChild(Ddom);
+      setTimeout(() => {
+        console.error(msgObj.nn, msgObj.txt,slideTime);
+        Ddom.style.transform = `translateX(100vw)`;
+      });
+      setTimeout(() => {
+        Body.removeChild(Ddom);
+      }, slideTime * 1000);
+    }
+
+    let danmuTopLevel = 0;
+    let canLog = true;
+    setInterval(() => {
+      canLog = true;
+    }, 1 * 100);
+    connectDYDanmu(9999);
   </script>
 </html>
