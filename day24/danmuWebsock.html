@@ -7,6 +7,12 @@
     <title>Document</title>
   </head>
   <style>
+    body {
+      position: relative;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
     .danmu {
       position: absolute;
       left: 0;
@@ -79,9 +85,9 @@
         if (msgObj.type == "chatmsg") {
           console.table(msgObj.nn, msgObj.txt);
           DanmuDomGenerator(msgObj);
+          canLog = false; 
         }
 
-        canLog = false;
       }
     }
 
@@ -99,9 +105,9 @@
       Ddom.style.transition = `all ${slideTime}s linear`;
       Body.appendChild(Ddom);
       setTimeout(() => {
-        console.error(msgObj.nn, msgObj.txt,slideTime);
+        console.error( msgObj.txt,slideTime);
         Ddom.style.transform = `translateX(100vw)`;
-      });
+      },17);
       setTimeout(() => {
         Body.removeChild(Ddom);
       }, slideTime * 1000);
@@ -111,7 +117,7 @@
     let canLog = true;
     setInterval(() => {
       canLog = true;
-    }, 1 * 100);
+    }, 1 * 1000);
     connectDYDanmu(9999);
   </script>
 </html>
