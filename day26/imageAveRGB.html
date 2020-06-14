@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body id="body">
+    <style>
+      #canvas {
+        margin: 0 auto;
+        display: block;
+      }
+      body {
+        padding: 30px;
+      }
+      #testImg {
+        display: none;
+      }
+      #imgSelect {
+        display: none;
+      }
+      .img-select-label {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        width: 200px;
+        height: 50px;
+        transform: translateX(-50%);
+        background: yellow;
+        box-shadow: 1px 1px 10px saddlebrown;
+        text-align: center;
+        line-height: 50px;
+        font-style: italic;
+      }
+    </style>
+    <img
+      src="https://bbs-fd.zol-img.com.cn/t_s2000x2000/g4/M00/04/04/Cg-4WlCsTBaIYnDOAAupZ-grSqUAACQ2QHk-LwAC6l_788.jpg"
+      alt=""
+      id="testImg"
+      crossorigin="anonymous"
+    />
+    <canvas id="canvas"> </canvas>
+    <label for="imgSelect" class="img-select-label">
+      <input type="file" id="imgSelect" />
+      choose image
+    </label>
+    <script>
+      var myWorker = new Worker("myWorker.js");
+      const ctx = canvas.getContext("2d");
+      // receive data calculated by worker
+      myWorker.addEventListener("message", ({ data: rbg }) => {
+        body.style.backgroundColor = rbg;
+      });
+
+      // get pixel data from ctx
+      testImg.onload = function () {
+        canvas.width = this.naturalWidth;
+        canvas.height = this.naturalHeight;
+        ctx.drawImage(this, 0, 0);
+        ctx.drawImage(this, 0, 0, this.width, this.height);
+        console.warn("start", performance.now());
+        let colorArray = ctx.getImageData(0, 0, this.width, this.height).data;
+        console.warn("end", performance.now());
+        myWorker.postMessage(colorArray);
+        console.warn("afterPost", performance.now());
+      };
+
+      // file to base64
+      imgSelect.onchange = function ({
+        currentTarget: {
+          files: [imgFile],
+        },
+      }) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(imgFile);
+        fileReader.onload = function (event) {
+          testImg.src = event.currentTarget.result;
+        };
+      };
+    </script>
+  </body>
+</html>
