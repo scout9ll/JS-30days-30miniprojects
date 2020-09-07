@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .nest {
+      /* width: 800px;
+      height: 600px; */
+      margin-left: 50%;
+      margin-top: 20%;
+      overflow: visible;
+      position: relative;
+    }
+    .nest > cus-hexagon {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  </style>
+  <style>
+    cus-hexagon {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-content: center;
+      filter: opacity(0.7) brightness(1.4);
+      place-content: center;
+      background: radial-gradient(#ff3636, #f97474,#e8e2e2);
+      clip-path: polygon(25% 0%, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+      transform: translate(0, 0) rotateZ(0deg);
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      /* width: calc(var(--project-item-width) + 5px);
+              height: calc(var(--project-item-width) * 0.866 + 5px); */
+    }
+    cus-hexagon:hover {
+      filter: opacity(1) brightness(1.1);
+    }
+    .hexagon path {
+      transition: all 0.3s;
+      stroke-width: 10px;
+      stroke-dasharray: 80;
+      stroke: transparent;
+    }
+    .hexagon:hover .project-item__stroke > path {
+      stroke: goldenrod;
+      stroke-width: 10px;
+      stroke-dasharray: 120;
+    }
+    .hexagon__stroke {
+      /* width: var(--project-item-width);
+              height: calc(var(--project-item-width) * 0.866); */
+      /* position: absolute;
+              left: 2.5px;
+              top: 2.5px; */
+      overflow: overlay;
+    }
+  </style>
+  <body>
+    <div class="nest">
+      <template id="hexagon">
+        <!-- <svg
+          class="hexagon__stroke"
+          width="174"
+          height="149"
+          viewBox="0 0 174 149"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M130.312 0.613281H43.6875L0.375 74.5L43.6875 148.387H130.312L173.625 74.5L130.312 0.613281Z"
+            fill="black"
+          />
+        </svg> -->
+        <div class="hexagon__content"></div>
+      </template>
+    </div>
+  </body>
+  <script src="./hexagon.js"></script>
+  <script>
+    class Hexagon extends HTMLElement {
+      constructor() {
+        super();
+      }
+      connectedCallback() {
+        const templateElem = document.getElementById("hexagon");
+        const content = templateElem.content.cloneNode(true);
+        const size = this.getAttribute("size");
+        const { height, width } = HexagonCube.sizeToPlace(size);
+        this.style.width = width + "px";
+        this.style.height = height + "px";
+        this.appendChild(content);
+      }
+    }
+    window.customElements.define("cus-hexagon", Hexagon);
+
+    const HEXAGON_SIZE = 50; // 边长
+    const HEXAGON_RADIUS = 3; // 六边形组成的半径范围
+    const HEXAGON_SPIRAL_DIRECTION = 4; // 环绕起点方向
+    const HEXAGON_SPIRAL_DELAY = 0.3; //环绕间隔
+    const center = new HexagonCube(0, 0, 0);
+    const hexagonList = HexagonCube.cubeSpiral(
+      center,
+      HEXAGON_RADIUS,
+      HEXAGON_SPIRAL_DIRECTION
+    );
+    const hexagonContainer = document.querySelector(".nest");
+
+    hexagonList.forEach((hexagon, index) => {
+      const hexagonElem = document.createElement("cus-hexagon");
+      const [offsetX, offsetY] = HexagonCube.doubleheightToPixel(
+        hexagon,
+        HEXAGON_SIZE
+      );
+      hexagonElem.setAttribute("size", HEXAGON_SIZE);
+      hexagonContainer.appendChild(hexagonElem);
+      setTimeout(() => {
+        if (!index) return;
+        hexagonElem.style.transform = `translate(${offsetX}px,${offsetY}px) rotateZ(180deg)`;
+      }, HEXAGON_SPIRAL_DELAY * index * 1000);
+    });
+  </script>
+</html>
