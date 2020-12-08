@@ -1,3 +1,4 @@
+// hexagon algorithm spired by https://www.redblobgames.com/grids/hexagons/
 class HexagonCube {
   x: number;
   y: number;
